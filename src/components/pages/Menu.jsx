@@ -10,7 +10,7 @@ export const Menu = () => {
       <Card title="Recogedor" url="https://i.pinimg.com/originals/83/d2/0f/83d20f872f1b2884630cbf027d696202.png" descripcion="Breve descripcion 1"  price="60"/>
       <Card title="Trapeador" url="https://falabella.scene7.com/is/image/FalabellaPE/17798801_1"  descripcion="Breve descripcion 1"  price="70"/>
       <Card title="Glade" url="https://m.media-amazon.com/images/I/81j-h4mqpyL._AC_SL1500_.jpg"  descripcion="Breve descripcion 1"  price="99"/>
-      <Card title="Pinesol" url="https://m.media-amazon.com/images/I/613S+r-ZfQS._SX342_.jpg"  descripcion="Breve descripcion 1"  price="66"/>
+      <Card title="Pinesol" url="https://m.media-amazon.com/images/I/613S+r-ZfQS._SX342_.jpg"  descripcion="Breve descripcion 1" price="66"/>
 
   </div>;
 };
