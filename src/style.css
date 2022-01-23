@@ -1,9 +1,67 @@
 /*Header*/
-
+#header-ul li a{
+  text-decoration: none;
+}
 .nav-item{
   margin: 1em;
 }
 
+
+/*Inicio*/
+#inicio {
+  text-align: justify;
+}
+
 .inicio-img {
   width: 100%;
+}
+
+.inicio-intro{
+  display: flex;
+  align-items: center;
+}
+
+#inicio-reserva{
+  margin-top: 2em;
+  display: flex;
+  align-items: center;
+}
+
+#form-submit{
+  margin-top: 1em;
+}
+
+
+/*NOSOTROS*/
+
+#nosotros {
+  text-align: justify;
+}
+#nosotros .row{
+  display: flex;
+  align-items: center;
+}
+
+#nosotros .img{
+  width: 100%;
+}
+
+
+/*Footer*/
+#footer{
+  text-align: center;
+  padding: 1em;
+  margin-top: 2em;
+  background-color: lightgray;
+}
+
+.footer-social{
+  width: 30px;
+  margin: 0 5px;
+  transition: all .5s ease-in-out;
+}
+
+.footer-social:hover{
+  transform: scale(1.5);
+  cursor: pointer;
 }
