@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import './style.css';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import { Inicio } from './components/pages/Inicio';
+import { Menu } from './components/pages/Menu';
+import { Nosotros } from './components/pages/Nosotros';
+import { Reservaciones } from './components/pages/Reservaciones';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+ 
+      <div className = 'container'>
+          <Header /> 
+          <Switch>      
+              <Route path="/pages/Reservaciones">
+                <Reservaciones />
+              </Route>
+              <Route path="/pages/Nosotros">
+                <Nosotros />
+              </Route>   
+              <Route path="/pages/Menu">
+                <Menu />
+              </Route>    
+              <Route path="/" exact>
+                <Inicio />
+              </Route>
+          </Switch>
+          <Footer />
+      </div>
+
+     
+    </Router>
   );
 }
+
+
 
 export default App;
