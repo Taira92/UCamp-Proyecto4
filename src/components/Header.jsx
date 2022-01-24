@@ -23,7 +23,7 @@ export const Header = () => {
                             <Link to="/pages/Menu">Menu</Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/pages/Reservaciones">Reservaciones</Link>
+                            <Link to="/pages/Configuracion">Configuración</Link>
                         </li>
                     </ul>
                     </div>

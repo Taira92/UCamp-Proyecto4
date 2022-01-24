@@ -46,8 +46,33 @@
   width: 100%;
 }
 
+/*MENU*/
+#card-content{
+  text-align: center;
+}
 
-/*Footer*/
+.card{
+  width: 20%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 1%;
+}
+
+.card img{
+  width: 100%;
+}
+
+.card-text span{
+  font-weight: bold;
+}
+
+/*CONFIGURACION*/
+
+#list-product button{
+  margin-left: 1em;
+}
+
+/*FOOTER*/
 #footer{
   text-align: center;
   padding: 1em;

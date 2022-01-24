@@ -1,5 +1,6 @@
 import React from 'react';
 
+   
 export const Inicio = () => {
   return   <div id="inicio">
     <div className="row">
