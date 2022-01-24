@@ -1,3 +1,6 @@
+.container-wrap{
+  margin: 0 2em;
+}
 /*Header*/
 #header-ul li a{
   text-decoration: none;
@@ -16,15 +19,21 @@
   width: 100%;
 }
 
+#index div{
+  padding: 0 2em;
+}
+
 .inicio-intro{
   display: flex;
-  align-items: center;
+  align-items: center; 
 }
 
 #inicio-reserva{
   margin-top: 2em;
   display: flex;
   align-items: center;
+  padding: 0 2em;
+
 }
 
 #form-submit{
@@ -89,4 +98,27 @@
 .footer-social:hover{
   transform: scale(1.5);
   cursor: pointer;
+}
+
+
+
+
+@media (max-width: 1200px) { 
+    .card{
+      width: 40%;
+    }
+}
+
+
+@media (max-width: 750px) { 
+  .card{
+    width: 90%;
+  }
+}
+
+
+@media (max-width: 530px) { 
+  .desaparecer{
+    display: none;
+  }
 }

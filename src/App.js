@@ -14,34 +14,38 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore/lite";
 import { dbConfig } from "./config/firebase";
+import { async } from "@firebase/util";
 
 function App() {
   const [listadoReservas, setListaReservas] = useState([]);
   const [listadoProductos, setListaProductos] = useState([]);
+  const [id, setId] = useState("");
   const [nombre, setNombre] = useState({ nombre: "" });
   const [descripcion, setDescripcion] = useState({ descripcion: "" });
   const [precio, setPrecio] = useState({ precio: "" });
   const [url, setUrl] = useState({ url: "" });
 
+  const [esEditar, setEsEditar] = useState(false);
+
+  const obtenerPlatos = async () => {
+    try {
+      const db = collection(dbConfig, "productos");
+      const listadoProductos = await getDocs(db);
+      const listadoFinal = listadoProductos.docs.map((item) => ({
+        id: item.id,
+        ...item.data(),
+      }));
+      setListaProductos(listadoFinal);
+    } catch (error) {
+      console.log("Hubo un error!");
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const obtenerPlatos = async () => {
-      try {
-        const db = collection(dbConfig, "productos");
-        const listadoProductos = await getDocs(db);
-        const listadoFinal = listadoProductos.docs.map((item) => ({
-          id: item.id,
-          ...item.data(),
-        }));
-        setListaProductos(listadoFinal);
-
-      } catch (error) {
-        console.log("Hubo un error!");
-        console.log(error);
-      }
-    };
-
     const obtenerReservas = async () => {
       try {
         const db = collection(dbConfig, "reservas");
@@ -56,19 +60,19 @@ function App() {
         console.log(error);
       }
     };
-
     obtenerPlatos();
     obtenerReservas();
   }, []);
 
-  useEffect(() => {
-   
-
-  }, []);
+  useEffect(() => {}, []);
 
   const submit = (e) => {
     e.preventDefault();
-    guardarPlato();
+    if (esEditar) {
+      actualizarDB();
+    } else {
+      guardarPlato();
+    }
   };
 
   const guardarPlato = async () => {
@@ -109,17 +113,42 @@ function App() {
   };
 
   const editarPlato = (item) => {
+    setEsEditar(true);
     setNombre(item.nombre);
     setDescripcion(item.descripcion);
     setPrecio(item.precio);
     setUrl(item.url);
+    setId(item.id);
   };
 
-  const eliminarPlato = () => {
-    console.log("eliminar tarea");
+  const actualizarDB = async () => {
+    try {
+      const datosActualizar = {
+        nombre,
+        descripcion,
+        precio,
+        url,
+      };
+      const config = doc(dbConfig, "productos", id);
+      await updateDoc(config, datosActualizar);
+      obtenerPlatos();
+    } catch (error) {
+      console.log("Hubo un error");
+      console.log(error);
+    }
   };
 
+  const eliminarPlato = async (item) => {
+    try {
+      const config = doc(dbConfig, "productos", item.id);
+      await deleteDoc(config);
+      obtenerPlatos();
 
+    } catch (error) {
+      console.log("Hubo un error");
+      console.log(error);
+    }
+  };
 
   const guardarReserva = async () => {
     try {
@@ -128,7 +157,7 @@ function App() {
         correo,
         telefono,
         fecha,
-        hora
+        hora,
       };
       const db = collection(dbConfig, "reservas");
       const item = await addDoc(db, datoAguardar);
@@ -149,68 +178,70 @@ function App() {
 
   return (
     <Router>
-      <div className="container">
-        <Header />
+      <Header />
+      <div className="container-wrap">       
         <Switch>
           <Route path="/pages/Configuracion">
             <div className="row">
-                <div className="col-sm-6 col-xs-12">
-                    <h2>Registro de platos</h2>
-                    <form onSubmit={submit}>
-                      <label className="form-label">Nombre</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => handleFormNombre(e.target.value)}
-                        value={nombre}
-                      />
+              <div className="col-sm-6 col-xs-12">
+                <h2>{esEditar ? "Editar plato" : "Agregar plato"}</h2>
+                <form onSubmit={submit}>
+                  <label className="form-label">Nombre</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    onChange={(e) => handleFormNombre(e.target.value)}
+                    value={nombre}
+                  />
 
-                      <label className="form-label" rows="10">Descripción</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => handleFormDescripcion(e.target.value)}
-                        value={descripcion}
-                      />
+                  <label className="form-label" rows="10">
+                    Descripción
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    onChange={(e) => handleFormDescripcion(e.target.value)}
+                    value={descripcion}
+                  />
 
-                      <label className="form-label">Precio</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        onChange={(e) => handleFormPrecio(e.target.value)}
-                        value={precio}
-                      />
+                  <label className="form-label">Precio</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    onChange={(e) => handleFormPrecio(e.target.value)}
+                    value={precio}
+                  />
 
-                      <label className="form-label">URL</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => handleFormUrl(e.target.value)}
-                        value={url}
-                      />
-                      
+                  <label className="form-label">URL</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    onChange={(e) => handleFormUrl(e.target.value)}
+                    value={url}
+                  />
 
-                      <button type="submit" className="btn btn-dark">
-                        Registrar
-                      </button>
-                    </form>
-                </div>
-                <div className="col-sm-6 col-xs-12">
-                  <div id="list-product">
-                    <h2>Listado de platos</h2>                 
-                    <table className="table table-striped">
-                      <thead>
-                       <tr>
-                          <th scope="col">Nombre</th>                     
-                          <th scope="col"></th>
-                        </tr>                  
-                      </thead>
-                      <tbody>
-                         {
-                         listadoProductos.map((item) => (
-                         <tr key={item.id}>
-                           <th scope="row"> {item.nombre} </th>                      
-                           <td>  <button
+                  <button type="submit" className="btn btn-dark">
+                    {esEditar ? "Editar" : "Registrar"}
+                  </button>
+                </form>
+              </div>
+              <div className="col-sm-6 col-xs-12">
+                <div id="list-product">
+                  <h2>Listado de platos</h2>
+                  <table className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {listadoProductos.map((item) => (
+                        <tr key={item.id}>
+                          <th scope="row"> {item.nombre} </th>
+                          <td>
+                            {" "}
+                            <button
                               className="btn btn-warning"
                               onClick={() => editarPlato(item)}
                             >
@@ -221,43 +252,42 @@ function App() {
                               onClick={() => eliminarPlato(item)}
                             >
                               Eliminar
-                            </button></td>
-                         </tr>                        
-                        ))}               
-                      </tbody>
-                    </table>
-                  </div>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
+              </div>
 
-
-                <div id="book">
-                  <div id="list-product">
-                    <h2>Listado de Reservas</h2>                 
-                    <table className="table table-striped">
-                      <thead>
-                       <tr>
-                          <th scope="col">Cliente</th>                     
-                          <th scope="col">correo</th>
-                          <th scope="col">Teléfono</th>
-                          <th scope="col">Fecha</th>
-                          <th scope="col">Hora</th>
-                        </tr>                  
-                      </thead>
-                      <tbody>
-                         {
-                         listadoReservas.map((item) => (
-                         <tr key={item.id}>
-                           <th scope="row"> {item.cliente} </th>    
-                           <th scope="row"> {item.correo} </th> 
-                           <th scope="row"> {item.telefono} </th> 
-                           <th scope="row"> {item.fecha} </th> 
-                           <th scope="row"> {item.hora} </th>                 
-                         </tr>                       
-                        ))}               
-                      </tbody>
-                    </table>
-                  </div>
+              <div id="book">
+                <div id="list-product">
+                  <h2>Listado de Reservas</h2>
+                  <table className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Cliente</th>
+                        <th className="desaparecer" scope="col">Correo</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Hora</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {listadoReservas.map((item) => (
+                        <tr key={item.id}>
+                          <th scope="row"> {item.cliente} </th>
+                          <th className="desaparecer" scope="row"> {item.correo} </th>
+                          <th scope="row"> {item.telefono} </th>
+                          <th scope="row"> {item.fecha} </th>
+                          <th scope="row"> {item.hora} </th>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
+              </div>
             </div>
           </Route>
           <Route path="/pages/Nosotros">
@@ -273,7 +303,10 @@ function App() {
                     <h5 className="card-title"> {item.nombre}</h5>
                     <p className="card-text"> {item.descripcion}</p>
                     <img src={item.url} />
-                    <p className="card-text"> <span>Precio:</span> S/.{item.precio}</p>                   
+                    <p className="card-text">
+                      {" "}
+                      <span>Precio:</span> S/.{item.precio}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -283,8 +316,8 @@ function App() {
             <Inicio onSubmit={guardarReservaSubmit} />
           </Route>
         </Switch>
-        <Footer />
       </div>
+      <Footer />
     </Router>
   );
 }

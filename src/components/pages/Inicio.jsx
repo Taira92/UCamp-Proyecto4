@@ -3,7 +3,7 @@ import React from 'react';
    
 export const Inicio = () => {
   return   <div id="inicio">
-    <div className="row">
+    <div id="index" className="row">
       <div className="col-sm-6 col-xs-12">
           <img className='inicio-img' src="https://img-global.cpcdn.com/recipes/db3c4c121ae53201/1200x630cq70/photo.jpg" alt="" />
       </div>
