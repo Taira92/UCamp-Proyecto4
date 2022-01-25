@@ -15,7 +15,7 @@ export const Footer = () => {
                 <a href=""><img className="footer-social" src={twitter}  alt="twitter" /></a>
                 <a href=""><img className="footer-social" src={youtube}  alt="youtube" /></a>
                 <a href=""><img className="footer-social" src={instagran}  alt="instagran" /></a>
-                <a href="https://github.com/Taira92/UCamp-Proyecto1"><img className="footer-social" src={github}  alt="github"/></a>
+                <a href="https://github.com/Taira92/UCamp-Proyecto4"><img className="footer-social" src={github}  alt="github"/></a>
             </div>
         </footer>
     )
