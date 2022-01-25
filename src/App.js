@@ -6,6 +6,7 @@ import { Menu } from "./components/pages/Menu";
 import { Nosotros } from "./components/pages/Nosotros";
 import { Configuracion } from "./components/pages/Configuracion";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Iframe from "react-iframe";
 
 import { useEffect, useState } from "react";
 import {
@@ -27,7 +28,6 @@ function App() {
   const [descripcion, setDescripcion] = useState({ descripcion: "" });
   const [precio, setPrecio] = useState({ precio: "" });
   const [url, setUrl] = useState({ url: "" });
-
 
   const [cliente, setCliente] = useState({ cliente: "" });
   const [correo, setCorreo] = useState({ correo: "" });
@@ -119,7 +119,6 @@ function App() {
     setUrl(texto);
   };
 
-
   const handleFormCliente = (texto) => {
     setCliente(texto);
   };
@@ -128,7 +127,7 @@ function App() {
     setCorreo(texto);
   };
 
-  const handleFormTelefono= (texto) => {
+  const handleFormTelefono = (texto) => {
     setTelefono(texto);
   };
 
@@ -171,7 +170,6 @@ function App() {
       const config = doc(dbConfig, "productos", item.id);
       await deleteDoc(config);
       obtenerPlatos();
-
     } catch (error) {
       console.log("Hubo un error");
       console.log(error);
@@ -207,7 +205,7 @@ function App() {
   return (
     <Router>
       <Header />
-      <div className="container-wrap">       
+      <div className="container-wrap">
         <Switch>
           <Route path="/pages/Configuracion">
             <div className="row">
@@ -248,7 +246,7 @@ function App() {
                     value={url}
                   />
 
-                  <button type="submit" className="btn btn-dark">
+                  <button id="button-plato" type="submit" className="btn btn-dark">
                     {esEditar ? "Editar" : "Registrar"}
                   </button>
                 </form>
@@ -287,16 +285,18 @@ function App() {
                     </tbody>
                   </table>
                 </div>
-              </div>
-
-              <div id="book">
+              </div>              
+            </div>
+            <div id="book">
                 <div id="list-product">
                   <h2>Listado de Reservas</h2>
                   <table className="table table-striped">
                     <thead>
                       <tr>
                         <th scope="col">Cliente</th>
-                        <th className="desaparecer" scope="col">Correo</th>
+                        <th className="desaparecer" scope="col">
+                          Correo
+                        </th>
                         <th scope="col">Teléfono</th>
                         <th scope="col">Fecha</th>
                         <th scope="col">Hora</th>
@@ -306,7 +306,10 @@ function App() {
                       {listadoReservas.map((item) => (
                         <tr key={item.id}>
                           <th scope="row"> {item.cliente} </th>
-                          <th className="desaparecer" scope="row"> {item.correo} </th>
+                          <th className="desaparecer" scope="row">
+                            {" "}
+                            {item.correo}{" "}
+                          </th>
                           <th scope="row"> {item.telefono} </th>
                           <th scope="row"> {item.fecha} </th>
                           <th scope="row"> {item.hora} </th>
@@ -315,8 +318,7 @@ function App() {
                     </tbody>
                   </table>
                 </div>
-              </div>
-            </div>
+              </div>         
           </Route>
           <Route path="/pages/Nosotros">
             <Nosotros />
@@ -341,76 +343,98 @@ function App() {
             </div>
           </Route>
           <Route path="/" exact>
-          <div id="inicio">
-    <div id="index" className="row">
-      <div className="col-sm-6 col-xs-12">
-          <img className='inicio-img' src="https://img-global.cpcdn.com/recipes/db3c4c121ae53201/1200x630cq70/photo.jpg" alt="" />
-      </div>
-      <div className="col-sm-6 col-xs-12 inicio-intro">
-        <div>
-          <h1>Criollón</h1> 
-          <p>Somos un restaurante criollo de comida peruana, caracterizados por la alta calidad y variedad de nuestros platos.</p>
-        </div>
-      </div>
-    </div>
-    <div id="inicio-reserva" className="row">
+            <div id="inicio">
+              <div id="index" className="row">
+                <div className="col-sm-6 col-xs-12">
+                  <img
+                    className="inicio-img"
+                    src="https://img-global.cpcdn.com/recipes/db3c4c121ae53201/1200x630cq70/photo.jpg"
+                    alt=""
+                  />
+                </div>
+                <div className="col-sm-6 col-xs-12 inicio-intro">
+                  <div>
+                    <h1>Criollón</h1>
+                    <p>
+                      Somos un restaurante criollo de comida peruana,
+                      caracterizados por la alta calidad y variedad de nuestros
+                      platos.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div id="inicio-reserva" className="row">
+                <div className="col-sm-6 col-xs-12">
+                  <h2>Haz tu reserva!</h2>
+                  <p>
+                    Ten un momento agradable con la mejor comida ya sea solo o
+                    acompañado. Para ello, ingresa tus datos indicandonos el dia
+                    y la hora de tu reserva.
+                  </p>
+                </div>
 
-        <div className="col-sm-6 col-xs-12">
-            <h2>Haz tu reserva!</h2>
-            <p>Ten un momento agradable con la mejor comida ya sea solo o acompañado. Para ello, ingresa tus datos indicandonos el dia y la hora de tu reserva.</p>
-        </div>
+                <div className="col-sm-6 col-xs-12">
+                  <h2>Registrar reserva</h2>
+                  <form onSubmit={guardarReservaSubmit}>
+                    <label className="form-label">Nombres y apellidos</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      onChange={(e) => handleFormCliente(e.target.value)}
+                      value={cliente}
+                    />
 
-        <div className="col-sm-6 col-xs-12">
-              <h2>Registrar reserva</h2>         
-              <form onSubmit={guardarReservaSubmit}>
-                <label className="form-label">Nombres y apellidos</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  onChange={(e) => handleFormCliente(e.target.value)}
-                  value={cliente}
-                />
+                    <label className="form-label">Correo</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      onChange={(e) => handleFormCorreo(e.target.value)}
+                      value={correo}
+                    />
 
-                <label className="form-label">Correo</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  onChange={(e) => handleFormCorreo(e.target.value)}
-                  value={correo}
-                />
+                    <label className="form-label">Teléfono</label>
+                    <input
+                      type="tel"
+                      className="form-control"
+                      onChange={(e) => handleFormTelefono(e.target.value)}
+                      value={telefono}
+                    />
 
-                <label className="form-label">Teléfono</label>
-                <input
-                  type="tel"
-                  className="form-control"
-                  onChange={(e) => handleFormTelefono(e.target.value)}
-                  value={telefono}
-                />
+                    <label className="form-label">Fecha</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      onChange={(e) => handleFormFecha(e.target.value)}
+                      value={fecha}
+                    />
 
-                <label className="form-label">Fecha</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  onChange={(e) => handleFormFecha(e.target.value)}
-                  value={fecha}
-                /> 
-                
-                <label className="form-label">Hora</label>
-                <input
-                type="time"
-                className="form-control"
-                onChange={(e) => handleFormHora(e.target.value)}
-                value={hora}
-              />
+                    <label className="form-label">Hora</label>
+                    <input
+                      type="time"
+                      className="form-control"
+                      onChange={(e) => handleFormHora(e.target.value)}
+                      value={hora}
+                    />
 
-                <button id="form-submit" type="submit" className="btn btn-dark">
-                  Agregar tarea
-                </button>
-              </form>
-          </div>
-      </div>
+                    <button
+                      id="form-submit"
+                      type="submit"
+                      className="btn btn-dark"
+                    >
+                      Reservar
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
 
-    </div>
+            <h3>Ubicanos</h3>    
+            <Iframe id="google-map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2319.4642182586035!2d-77.03153717060688!3d-12.121846773700744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c818599d1f0f%3A0x23d56aa7d126177b!2sC.%20de%20las%20Pizzas%2C%20Miraflores%2015074!5e0!3m2!1ses!2spe!4v1643085776862!5m2!1ses!2spe"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+            ></Iframe>
           </Route>
         </Switch>
       </div>
