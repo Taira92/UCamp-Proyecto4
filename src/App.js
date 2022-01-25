@@ -345,14 +345,14 @@ function App() {
           <Route path="/" exact>
             <div id="inicio">
               <div id="index" className="row">
-                <div className="col-sm-6 col-xs-12">
+                <div className="col-lg-6 col-xs-12">
                   <img
                     className="inicio-img"
                     src="https://img-global.cpcdn.com/recipes/db3c4c121ae53201/1200x630cq70/photo.jpg"
                     alt=""
                   />
                 </div>
-                <div className="col-sm-6 col-xs-12 inicio-intro">
+                <div className="col-lg-6 col-xs-12 inicio-intro">
                   <div>
                     <h1>Criollón</h1>
                     <p>
@@ -364,7 +364,7 @@ function App() {
                 </div>
               </div>
               <div id="inicio-reserva" className="row">
-                <div className="col-sm-6 col-xs-12">
+                <div className="col-lg-6 col-xs-12">
                   <h2>Haz tu reserva!</h2>
                   <p>
                     Ten un momento agradable con la mejor comida ya sea solo o
@@ -373,9 +373,9 @@ function App() {
                   </p>
                 </div>
 
-                <div className="col-sm-6 col-xs-12">
+                <div className="col-lg-6 col-xs-12">
                   <h2>Registrar reserva</h2>
-                  <form onSubmit={guardarReservaSubmit}>
+                  <form id="form-reserva" onSubmit={guardarReservaSubmit}>
                     <label className="form-label">Nombres y apellidos</label>
                     <input
                       type="text"

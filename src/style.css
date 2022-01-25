@@ -44,6 +44,12 @@
   margin-top: 1em;
 }
 
+#form-reserva{
+    padding: 2em;
+    border-style: solid;
+    border-radius: 3em;
+    margin: 3em 3em 0 3em;
+}
 
 #google-map{
   width: 100%;
@@ -131,7 +137,12 @@
 }
 
 
-@media (max-width: 530px) { 
+@media (max-width: 560px) { 
+  #form-reserva{
+    margin: 0;
+  }
+
+
   .desaparecer{
     display: none;
   }
